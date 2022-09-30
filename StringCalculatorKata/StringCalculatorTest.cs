@@ -1,85 +1,88 @@
 using System;
-using NUnit.Framework;
 using StringCalculator;
+using Xunit;
 
 namespace StringCalculator.Tests
 {
-    [TestFixture]
-    [Category("StringCalculatorKata")]
     public class StringCalculatorTest
     {
-        [TestCase("")]
-        [TestCase(null)]
+        [Theory]
+        [Trait("Traktowanie null'a i pustego stringa jako zero", "Testy kalkulatora")]
+        [InlineData("")]
+        [InlineData(null)]
         public void AddReturnZeroWhenSuppliedEmptyOrNullString(string numbers)
         {
             var result = StringCalculator.Add(numbers);
-            Assert.That(result, Is.EqualTo(0));
+            Assert.Equal(0, result);
         }
 
-
-        [TestCase("0", 0)]
-        [TestCase("1", 1)]
-        [TestCase("2", 2)]
-        [TestCase("3", 3)]
-        [TestCase("0,1,2,3,4,555", 565)]
+        [Theory]
+        [Trait("Dodawanie pojedynczej liczby", "Testy kalkulatora")]
+        [InlineData("0", 0)]
+        [InlineData("1", 1)]
+        [InlineData("2", 2)]
+        [InlineData("3", 3)]
         public void AddReturnNumberWhenSuppliedSingleNumberInString(string number, int expectedResult)
         {
             var result = StringCalculator.Add(number);
-            Assert.That(result, Is.EqualTo(expectedResult));
+            Assert.Equal(expectedResult, result);
         }
 
-
-        [TestCase("1,2,3", 6)]
-        [TestCase("3\n2", 5)]
-        [TestCase("1\n2,3", 6)]
-        [TestCase("1\n2\n3,4,5", 15)]
-        public void AddReturSumWhenSuppliedNumbersInStringWithNewLineAsDelimiter(string numbers, int expectedResult)
+        [Theory]
+        [Trait("Dodawanie z enterem jako rozdzielaczem", "Testy kalkulatora")]
+        [InlineData("1,2,3", 6)]
+        [InlineData("3\n2", 5)]
+        [InlineData("1\n2,3", 6)]
+        [InlineData("1\n2\n3,4,5", 15)]
+        public void AddReturnSumWhenSuppliedNumbersInStringWithNewLineAsDelimiter(string numbers, int expectedResult)
         {
             var result = StringCalculator.Add(numbers);
-            Assert.That(result, Is.EqualTo(expectedResult));
+            Assert.Equal(expectedResult, result);
         }
 
-
-        [TestCase("0,1", 1)]
-        [TestCase("0,1,1", 2)]
-        [TestCase("0,2", 2)]
-        [TestCase("0,2,2", 4)]
-        [TestCase("0,3", 3)]
-        [TestCase("0,3,2", 5)]
-        [TestCase("0,3,3", 6)]
+        [Theory]
+        [Trait("Dodawanie wielu liczb", "Testy kalkulatora")]
+        [InlineData("0,1", 1)]
+        [InlineData("0,1,1", 2)]
+        [InlineData("0,2", 2)]
+        [InlineData("0,2,2", 4)]
+        [InlineData("0,3", 3)]
+        [InlineData("0,3,2", 5)]
+        [InlineData("0,3,3", 6)]
         public void AddReturnSumWhenSuppliedMultipleNumbersInString(string numbers, int expectedResult)
         {
             var result = StringCalculator.Add(numbers);
-            Assert.That(result, Is.EqualTo(expectedResult));
+            Assert.Equal(expectedResult, result);
         }
 
-
-        [TestCase("0,3,1001", 3)]
-        [TestCase("0,3,1000", 1003)]
+        [Theory]
+        [Trait("Ignorowanie liczb powy¿ej 1000", "Testy kalkulatora")]
+        [InlineData("0,3,1001", 3)]
+        [InlineData("0,3,1000", 1003)]
         public void AddReturnSumByIgnoringMoreThanThousandWhenSuppliedMultipleNumbersInString(string numbers, int expectedResult)
         {
             var result = StringCalculator.Add(numbers);
-            Assert.That(result, Is.EqualTo(expectedResult));
+            Assert.Equal(expectedResult, result);
         }
 
-
-        [TestCase("//*\n1*2", 3)]
-        [TestCase("//;\n1;2", 3)]
-        [TestCase("//;\n1;2;3;4;5;6;7;8;9;10", 55)]
+        [Theory]
+        [Trait("Alternatywne rozdzielacze", "Testy kalkulatora")]
+        [InlineData("//*\n1*2", 3)]
+        [InlineData("//;\n1;2", 3)]
+        [InlineData("//;\n1;2;3;4;5;6;7;8;9;10", 55)]
         public void AddWhenGivenDefinedDelimiterUsesThatDelimiter(string input, int expectation)
         {
             var result = StringCalculator.Add(input);
 
-            Assert.That(result, Is.EqualTo(expectation));
+            Assert.Equal(expectation, result);
         }
 
-
-        [TestCase("1,-1", -1)]
-        public void AddThrowArgumentExceptionWhenSuppliedStringDoesNotMeetRule(string numbers, int beyondRuleNumber)
+        [Theory]
+        [Trait("Wyrzucenie warunku dla ujemnych liczb", "Testy kalkulatora")]
+        [InlineData("1,-1")]
+        public void ThrowArgumentException(string numbers)
         {
-            var exception = Assert.Throws<ArgumentException>(() => StringCalculator.Add(numbers));
-
-            Assert.That(exception.Message, Is.EqualTo(string.Format("string contains [{0}], which does not meet rule. entered number should not negative.", beyondRuleNumber)));
+            Assert.Throws<ArgumentException>(() => StringCalculator.Add(numbers));
         }
     }
 
