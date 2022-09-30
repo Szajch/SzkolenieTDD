@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace StringCalculator
 {
-    public class StringCalculator
+    public static class StringCalculator
     {
         public static int Add(string numbers)
         {
@@ -14,7 +14,7 @@ namespace StringCalculator
 
         private static int GetSum(string numbers)
         {
-            var delimiter = GetPossibleDelimiter(numbers);
+            var delimiter = GetPossibleDelimiter();
             var newnumbers = numbers;
 
             if (HasSpecificDelimiter(numbers)) //for specific delimiters
@@ -31,7 +31,7 @@ namespace StringCalculator
 
         private static bool HasSpecificDelimiter(string numbers) => numbers.StartsWith("//");
 
-        private static string GetPossibleDelimiter(string numbers) => ",\n";
+        private static string GetPossibleDelimiter() => ",\n";
 
         private static string GetSpecificDelimiter(string numbers) => numbers.Substring(2, numbers.IndexOf("\n", StringComparison.Ordinal) - 2);
 
@@ -42,9 +42,9 @@ namespace StringCalculator
         }
         private static int ParseToInt(string n)
         {
-            var result = IsGreaterThanThousand(Convert.ToInt32(n))
-                             ? 0
-                             : (Convert.ToInt32(string.IsNullOrEmpty(n) ? "0" : n));
+            int result = 0;
+            if (!IsGreaterThanThousand(Convert.ToInt32(n)) && !string.IsNullOrEmpty(n))
+                result = Convert.ToInt32(n);
             ValidateNumbersAsPerRule(result);
 
             return result;
