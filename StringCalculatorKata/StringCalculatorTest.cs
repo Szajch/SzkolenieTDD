@@ -73,7 +73,6 @@ namespace StringCalculator.Tests
         public void AddWhenGivenDefinedDelimiterUsesThatDelimiter(string input, int expectation)
         {
             var result = StringCalculator.Add(input);
-
             Assert.Equal(expectation, result);
         }
 
