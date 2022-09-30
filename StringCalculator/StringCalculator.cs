@@ -14,7 +14,7 @@ namespace StringCalculator
 
         private static int GetSum(string numbers)
         {
-            var delimiter = GetPossibleDelimiter();
+            var delimiter = GetPossibleDelimiter;
             var newnumbers = numbers;
 
             if (HasSpecificDelimiter(numbers)) //for specific delimiters
@@ -31,9 +31,9 @@ namespace StringCalculator
 
         private static bool HasSpecificDelimiter(string numbers) => numbers.StartsWith("//");
 
-        private static string GetPossibleDelimiter() => ",\n";
+		private static readonly string GetPossibleDelimiter = ",\n";
 
-        private static string GetSpecificDelimiter(string numbers) => numbers.Substring(2, numbers.IndexOf("\n", StringComparison.Ordinal) - 2);
+		private static string GetSpecificDelimiter(string numbers) => numbers.Substring(2, numbers.IndexOf("\n", StringComparison.Ordinal) - 2);
 
         private static string GetSpecificNumbers(string numbers)
         {
